@@ -1,0 +1,7 @@
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\bin\Debug\Tugas_OOP.exe.config
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\bin\Debug\Tugas_OOP.exe
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\bin\Debug\Tugas_OOP.pdb
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\obj\Debug\Tugas_OOP.csprojAssemblyReference.cache
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\obj\Debug\Tugas_OOP.csproj.CoreCompileInputs.cache
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\obj\Debug\Tugas_OOP.exe
+C:\Users\lenovo\source\repos\Tugas_OOP\Tugas_OOP\obj\Debug\Tugas_OOP.pdb
