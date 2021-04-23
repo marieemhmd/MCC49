@@ -60,15 +60,34 @@ namespace Tugas_OOP
 
         private static int TampilanMenu()
         {
-            Console.WriteLine("==== MENU ====");
-            Console.WriteLine("1. Tambah Data Volume Bola Yang Ingin Dihitung");
-            Console.WriteLine("2. Hapus Data Volume Bola");
-            Console.WriteLine("3. Tampil Data Volume Bola");
-            Console.WriteLine("4. Exit");
-            Console.Write("Input Anda: ");
-            int option = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
-            return option;
+            try
+            {
+                Console.WriteLine("==== MENU ====");
+                Console.WriteLine("1. Tambah Data Volume Bola Yang Ingin Dihitung");
+                Console.WriteLine("2. Hapus Data Volume Bola");
+                Console.WriteLine("3. Tampil Data Volume Bola");
+                Console.WriteLine("4. Exit");
+                Console.Write("Input Anda: ");
+                int option = Convert.ToInt32(Console.ReadLine());
+                if ((option <= 0) || (option > 4))
+                {
+                    Console.Write("Input yang Anda masukkan salah. Masukkan ulang input: ");
+                    option = Convert.ToInt32(Console.ReadLine());
+                    while((option <= 0) || (option > 4))
+                    {
+                        Console.Write("Input yang Anda masukkan salah. Masukkan ulang input: ");
+                        option = Convert.ToInt32(Console.ReadLine());
+                    }
+                }
+                Console.WriteLine();
+                return option;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+                Console.WriteLine();
+                return 0;
+            }
         }
 
         private static void TampilData(List<Bola> bola, Bola volume)
