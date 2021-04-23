@@ -8,17 +8,17 @@ namespace Tugas_OOP
 {
     class Bola
     {
-        public int jariJari { get; set; }
+        public int JariJari { get; set; }
         
         public Bola()
         {
         }
-        public Bola(int JariJari)
+        public Bola(int jariJari)
         {
-            this.jariJari = JariJari;
+            this.JariJari = jariJari;
         }
 
-        public double volume(int r)
+        public double Volume(int r)
         {
             return 3.14 * r * r * r * 4 / 3;
         }
