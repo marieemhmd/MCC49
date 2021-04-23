@@ -1,0 +1,7 @@
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\bin\Debug\StringManipulation.exe.config
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\bin\Debug\StringManipulation.exe
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\bin\Debug\StringManipulation.pdb
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\obj\Debug\StringManipulation.csprojAssemblyReference.cache
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\obj\Debug\StringManipulation.csproj.CoreCompileInputs.cache
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\obj\Debug\StringManipulation.exe
+C:\Users\lenovo\source\repos\StringManipulation\StringManipulation\obj\Debug\StringManipulation.pdb

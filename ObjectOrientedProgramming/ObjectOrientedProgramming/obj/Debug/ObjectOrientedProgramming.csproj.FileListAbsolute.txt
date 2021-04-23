@@ -1,0 +1,7 @@
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\bin\Debug\ObjectOrientedProgramming.exe.config
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\bin\Debug\ObjectOrientedProgramming.exe
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\bin\Debug\ObjectOrientedProgramming.pdb
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\obj\Debug\ObjectOrientedProgramming.csprojAssemblyReference.cache
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\obj\Debug\ObjectOrientedProgramming.csproj.CoreCompileInputs.cache
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\obj\Debug\ObjectOrientedProgramming.exe
+C:\Users\lenovo\source\repos\ObjectOrientedProgramming\ObjectOrientedProgramming\obj\Debug\ObjectOrientedProgramming.pdb
