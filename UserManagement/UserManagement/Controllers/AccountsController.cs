@@ -62,7 +62,7 @@ namespace UserManagement.Controllers
 
             var account = new Account
             {
-                NIK = person.NIK,
+                NIK = registerVM.NIK, 
                 Password = Hashing.HashPassword(registerVM.Password)
             };
             myContext.Accounts.Add(account);
@@ -79,7 +79,7 @@ namespace UserManagement.Controllers
                     
             var profiling = new Profiling
             {
-                NIK = person.NIK,
+                NIK = registerVM.NIK,
                 EducationId = education.Id
             };
             myContext.Profilings.Add(profiling);
@@ -88,7 +88,7 @@ namespace UserManagement.Controllers
             var accountRole = new AccountRole
             {
                 RoleId = 2,
-                AccountId = person.NIK
+                AccountId = registerVM.NIK
             };
             myContext.AccountRoles.Add(accountRole);
             myContext.SaveChanges();
@@ -101,7 +101,7 @@ namespace UserManagement.Controllers
         /// AccountsController Api Userdata method    
         /// </summary>    
         /// <returns></returns>
-        [Authorize]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("UserData")]
         public async Task<ActionResult> GetAllRegister()
         {
@@ -112,7 +112,7 @@ namespace UserManagement.Controllers
                          join ed in myContext.Educations on pr.EducationId equals ed.Id
                          join ar in myContext.AccountRoles on pr.NIK equals ar.AccountId
                          join r in myContext.Roles on ar.RoleId equals r.Id
-                         select new RegisterVM
+                         select new UserDataVM
                          {
                              NIK = p.NIK,
                              FirstName = p.FirstName,
@@ -125,6 +125,7 @@ namespace UserManagement.Controllers
                              Degree = ed.Degree,
                              GPA = ed.GPA,
                              UniversityId = ed.UniversityId,
+                             EducationId = ed.Id,
                              Role = r.Name
                          }
                              );//.ToList();
@@ -136,7 +137,7 @@ namespace UserManagement.Controllers
         /// AccountsController Api Profile by NIK method    
         /// </summary>    
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         [HttpGet("Profile/{NIK}")]
         public ActionResult GetRegisterByNIK(string NIK)
         {
@@ -276,7 +277,7 @@ namespace UserManagement.Controllers
                     Credentials = new NetworkCredential("saipularipinjuned@gmail.com", "SaipulAripin123"),
                     EnableSsl = true
                 };
-                client.Send("mariemuhammad28041998@gmail.com", forgotPass.Email, "Reset Password", $"Hello {person.FirstName} {person.LastName}," +
+                client.Send("saipularipinjuned@gmail.com", forgotPass.Email, "Reset Password", $"Hello {person.FirstName} {person.LastName}," +
                     $"\n\nYour New Password is {newPass}");
                 return Ok("message sent");
             }
@@ -313,10 +314,11 @@ namespace UserManagement.Controllers
                          join a in myContext.Accounts on p.NIK equals a.NIK
                          join pr in myContext.Profilings on p.NIK equals pr.NIK
                          join ed in myContext.Educations on pr.EducationId equals ed.Id
+                         join u in myContext.Universities on ed.UniversityId equals u.Id
                          join ar in myContext.AccountRoles on pr.NIK equals ar.AccountId
                          join r in myContext.Roles on ar.RoleId equals r.Id
                          where p.NIK == NIK
-                         select new RegisterVM
+                         select new
                          {
                              NIK = p.NIK,
                              FirstName = p.FirstName,
@@ -329,7 +331,9 @@ namespace UserManagement.Controllers
                              Degree = ed.Degree,
                              GPA = ed.GPA,
                              UniversityId = ed.UniversityId,
-                             Role = r.Name
+                             Role = r.Name,
+                             University = u.Name,
+                             EducationId = ed.Id
                              
                          };
             return Ok(result);

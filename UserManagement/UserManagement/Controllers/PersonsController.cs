@@ -13,6 +13,7 @@ namespace UserManagement.Controllers
 {
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
+    [Consumes("application/json")]
     [ApiController]
     public class PersonsController : BaseController<Person, PersonRepository, string>
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using UserManagement.Repository.Interface;
 
 namespace UserManagement.Base
 {
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [Consumes("application/json")]
     [ApiController]
@@ -28,6 +30,7 @@ namespace UserManagement.Base
         /// Get method    
         /// </summary>    
         /// <returns></returns>
+        [EnableCors("AllowOrigin")]
         [HttpGet]
         public ActionResult Get()
         {
@@ -66,6 +69,7 @@ namespace UserManagement.Base
         /// Put method    
         /// </summary>    
         /// <returns></returns>
+        [EnableCors("AllowOrigin")]
         [HttpPut]
         public ActionResult Update(Entity entity)
         {
@@ -85,6 +89,7 @@ namespace UserManagement.Base
         /// Delete method    
         /// </summary>    
         /// <returns></returns>
+        [EnableCors("AllowOrigin")]
         [HttpDelete("{key}")]
         public ActionResult Delete(Key key)
         {

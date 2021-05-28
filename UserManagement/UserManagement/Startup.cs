@@ -69,7 +69,7 @@ namespace UserManagement
 
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
 
             //services.AddSwaggerGen();
@@ -119,9 +119,9 @@ namespace UserManagement
                     }
                 });
                 // Set the comments path for the Swagger JSON and UI.    
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
             });
 
         //services.AddCors(c =>
@@ -157,7 +157,7 @@ namespace UserManagement
 
             app.UseRouting();
             
-            app.UseCors(options => options.AllowAnyOrigin());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             //app.UseCors(options => options.WithOrigins("https://localhost:44363"));
 
