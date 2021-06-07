@@ -1,0 +1,539 @@
+﻿@{ Layout = "_LayoutAdmin";
+    ViewBag.Title = "Admin";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <div class="table-responsive m-t-40">
+                    <div class="row ml-0">
+                        <button type="button" class="mb-3 btn btn-primary text-center" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false" onclick="reset()">
+                            <i class="fas fa-user-plus"></i> Add Employee
+                        </button>
+                        <button type="button" class="mb-3 btn btn-warning text-center ml-2" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetQuota()">
+                            <i class="fas fa-trash-restore"></i> Reset Leave Quota
+                        </button>
+                    </div>
+                    <table id="table_id" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIK</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Birth Date</th>
+                                <th>Gender</th>
+                                <th>Marital Status</th>
+                                <th>Address</th>
+                                <th>R-Quota</th>
+                                <th>Manager</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>NIK</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Birth Date</th>
+                                <th>Gender</th>
+                                <th>Marital Status</th>
+                                <th>Address</th>
+                                <th>R-Quota</th>
+                                <th>Manager</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            @* Modal Employee *@
+            <div class="modal fade" role="dialog" id="modal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" hidden>
+                            <h2 class="modal-title">Employee</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="Readonly()"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form" name="form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!--NIK-->
+                                        <div class="form-group">
+                                            <label for="nik" class="col-form-label">NIK<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="NIK" id="NIK">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--FullName-->
+                                        <div class="form-group">
+                                            <label for="fullName" class="col-form-label">Full Name<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="FullName" id="FullName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--Email-->
+                                        <div class="form-group">
+                                            <label for="email" class="col-form-label">Email<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="email" class="form-control" name="Email" id="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--PhoneNumber-->
+                                        <div class="form-group">
+                                            <label for="phoneNumber" class="col-form-label">Phone Number<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--BirthDate-->
+                                        <div class="form-group">
+                                            <label for="birthDate" class="col-form-label">Birth Date<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="date" class="form-control" name="BirthDate" id="BirthDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--Address-->
+                                        <div class="form-group">
+                                            <label for="address" class="col-form-label">Address<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="Address" id="Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--maritalStatus-->
+                                        <div class="form-group">
+                                            <label for="maritalStatus" class="col-form-label">Marital Status<span class="text-danger"> *</span></label>
+                                            <select class="form-control" name="MaritalStatus" id="MaritalStatus">
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--Manager-->
+                                        <div class="form-group">
+                                            <label for="niK_Manager" class="col-form-label">Relation Manager<span class="text-danger"> *</span></label>
+                                            <select class="form-control" name="niK_Manager" id="NIK_Manager"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--Gender-->
+                                        <div class="form-group">
+                                            <label for="gender" class="col-form-label">Gender<span class="text-danger"> *</span></label>
+                                            @*<input type="text" class="form-control" name="Gender" id="Gender">*@
+                                            <select class="form-control" name="Gender" id="Gender">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--position-->
+                                        <div class="form-group">
+                                            <label for="positionId" class="col-form-label">Position<span class="text-danger"> *</span></label>
+                                            @*<input type="text" class="form-control" name="positionId" id="Position">*@
+                                            <select class="form-control" name="positionId" id="Position">
+                                            </select>
+                                        </div>
+                                        <!--Remaining Quota-->
+                                        <div class="form-group" hidden>
+                                            <label for="remainingQuota" class="col-form-label">Remaining Quota<span class="text-danger"> *</span></label>
+                                            <input type="number" class="form-control" name="RemainingQuota" id="RemainingQuota">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="Readonly()">Close</button>
+                            <button class="btn btn-primary" type="submit" form="form">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal Add Employee *@
+
+@section scripts
+{
+    <script>
+        var isUpdate;
+        $(document).ready(function () {
+            dataTable = $('#table_id').DataTable({
+                "lengthMenu": [[3, 15, 25, 100, -1], [3, 15, 25, 100, "All"]],
+                "order": [[0, "asc"]],
+                "filter": true,
+                "orderMulti": false,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                "ajax": {
+                    "url": "employee/get",
+                    "type": "get",
+                    "dataSrc": "data"
+                },
+                language: {
+                    searchPlaceholder: "Search..."
+                },
+                "columnDefs": [
+                    {
+                        "targets": [1, 3, 4, 5, 6, 7, 8],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [2, 3, 1, 4, 5, 7, 8, 10, 11, 12],
+                        "orderable": false,
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    { "data": 'nik' },
+                    { "data": 'fullName' },
+                    {
+                        "data": 'phoneNumber',
+                        "render": function (data, type, row) {
+                            var str = data;
+                            var re = /^0/;
+                            if (re.test(data)) {
+                                str = str.replace(re, "+62")
+                            }
+                            return str;
+                        }
+                    },
+                    { "data": 'email' },
+                    {
+                        "data": 'birthDate',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD MMMM YYYY');
+                        }
+                    },
+                    { "data": 'gender' },
+                    { "data": 'maritalStatus' },
+                    { "data": 'address' },
+                    { "data": 'remainingQuota' },
+                    {
+                        "data": 'manager',
+                        "render": function (data, type, row) {
+                            if (data == null) {
+                                return "Don't Have RM"
+                            }
+                            else {
+                                var obj = JSON.parse(JSON.stringify(data));
+                                return obj.nik + ' - ' + obj.fullName;
+                            }
+                        }
+                    },
+                    {
+                        "data": 'position',
+                        render: function (data, type, row) {
+                            var obj = JSON.parse(JSON.stringify(data));
+                            return obj.positionName;
+                        }
+                    },
+                    {
+                        "data": 'nik',
+                        "render": function (data, type, row, meta) {
+                            return '<a class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit ' + row['fullName'] + '"  onclick="Get(\'' + row['nik'] + '\')"><i class ="far fa-edit"></i> </a> ' +
+                                '<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete ' + row['fullName'] + '" onclick="Delete(\'' + row['nik'] + '\')"><i class ="far fa-trash-alt"></i></button>'
+                        }
+                    }
+                ]
+            });
+            // Position
+            var PositionDynamicDropdown = '<option value="-1">Select Position</option>';
+            $.ajax({
+                type: "GET",
+                url: '/Position/Get',
+                success: function (data) {
+                    var result = data['data']
+                    for (var i = 0; i < result.length; i++) {
+                        PositionDynamicDropdown += '<option value="' + result[i].id + '">' + result[i].positionName + '</option>';
+                        $("#Position").html(PositionDynamicDropdown);
+                    }
+                }
+            });
+            // RM
+            var rmDropdown = '<option value="-1">Select Manager</option>';
+            $.ajax({
+                type: "GET",
+                url: '/Employee/Get',
+                success: function (data) {
+                    var result = data['data']
+                    for (var i = 0; i < result.length; i++) {
+                        rmDropdown += '<option value="' + result[i].niK_Manager + '">' + result[i].manager.fullName + '</option>';
+                        $("#NIK_Manager").html(rmDropdown);
+                    }
+                }
+            });
+
+        });
+
+        function Readonly() {
+            $('#NIK').attr('readonly', false);
+            $('#Email').attr('readonly', false);
+            validator.resetForm();
+        }
+
+        var validator = $("#form").validate({
+            rules: {
+                FullName: {
+                    required: true,
+                },
+                BirthDate: {
+                    required: true,
+                },
+                Address: {
+                    required: true,
+                },
+                MaritalStatus: {
+                    required: true,
+                },
+                RelationManager: {
+                    required: true,
+                },
+                Gender: {
+                    required: true,
+                },
+                Position: {
+                    required: true,
+                },
+                NIK: {
+                    required: true,
+                    number: true
+                },
+                Email: {
+                    required: true,
+                    email: true,
+                },
+                PhoneNumber: {
+                    required: true,
+                    minlength: 11,
+                    maxlength: 15,
+                    number: true
+                }
+            },
+            messages: {
+                Email: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                    email: "<small style='color: salmon'>Invalid email address</small>",
+                },
+                PhoneNumber: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                    minlength: "<small style='color: salmon'>Minimum 11 Characters</small>",
+                    maxlength: "<small style='color: salmon'>Minimum 15 Characters</small>",
+                    number: "<small style='color: salmon'>Phone must be numbers</small>"
+                },
+                NIK: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                    number: "<small style='color: salmon'>NIK must be numbers</small>",
+                },
+                FullName: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                BirthDate: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                Address: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                MaritalStatus: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                RelationManager: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                Gender: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+                Position: {
+                    required: "<small style='color: red'>This field is required.</small>",
+                },
+            },
+            submitHandler: function (form) {
+                var form = $(form);
+                var urlString;
+                if (isUpdate == 1)
+                    urlString = "employee/put"
+                else
+                    urlString = "employee/post"
+                $.ajax({
+                    type: "POST",
+                    url: urlString,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $('#modal').modal('hide');
+                        $('#table_id').DataTable().ajax.reload();
+                        console.log(data);
+                        if (data.status == "200") {
+                            Swal.fire(
+                                'Successfully Create Data!',
+                                'new data is created successfully',
+                                'success'
+                            )
+                        }
+                        else if (urlString == "employee/put") {
+                            Swal.fire(
+                                'Successfully Edit Data!',
+                                'data updated successfully',
+                                'success'
+                            )
+                        }
+                        else if (data.status == "400") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "characters must start with 08 and minimum 11 characters!",
+                                "error"
+                            )
+                        }
+                        else {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "NIK or Email already exists!",
+                                "error"
+                            )
+                        }
+                    },
+                });
+            }
+        });
+
+        function reset() {
+            isUpdate = 0;
+            $('#NIK').attr('readonly', false);
+            $('#Email').attr('readonly', false);
+            $('#form').trigger('reset');
+        }
+        function Get(id) {
+            $('#NIK').attr('readonly', true);
+            $('#Email').attr('readonly', true);
+            $.ajax({
+                url: "employee/GetById",
+                type: "GET",
+                data: { 'id': id },
+                success: function (data) {
+                    $('#modal').modal('show');
+                    var data = data['data'];
+                    $('#NIK').val(data.nik);
+                    $('#FullName').val(data.fullName);
+                    $('#PhoneNumber').val(data.phoneNumber);
+                    $('#Email').val(data.email);
+                    $('#BirthDate').val(moment(data.birthDate).format('YYYY-MM-DD'));
+                    $('#Gender').val(data.gender);
+                    $('#MaritalStatus').val(data.maritalStatus);
+                    $('#Address').val(data.address);
+                    $('#RemainingQuota').val(data.remainingQuota);
+                    $('#NIK_Manager').val(data.niK_Manager);
+                    $('#Position').val(data.positionId);
+                    $('#Role').val(data.roleId);
+                    isUpdate = 1;
+                }
+            });
+        }
+        function Delete(id) {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((data) => {
+                if (data.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "employee/Delete",
+                        data: { 'id': id },
+                        success: function (data) {
+                            $('#table_id').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your data has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Your Work cannot be saved</a>'
+                            })
+                        },
+                    });
+                }
+            });
+        }
+
+        function resetQuota() {
+            leavequota($('#RemainingQuota').val());
+        }
+
+        function leavequota() {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, reset!'
+            }).then((data) => {
+                if (data.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "employee/ResetQuota",
+                        data: resetQuota,
+                        success: function (data) {
+                            $('#table_id').DataTable().ajax.reload();
+                            Swal.fire(
+                                'It worked!',
+                                'Leave Quota has been successfully reset',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Your Work cannot be saved</a>'
+                            })
+                        },
+                    });
+                }
+            });
+        }
+    </script>
+}

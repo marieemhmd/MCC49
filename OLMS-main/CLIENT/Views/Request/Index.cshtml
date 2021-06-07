@@ -1,0 +1,245 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Request";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-warning">Send your Request</h2>
+                <form class="m-t-40" novalidate id="formSendRequest">
+                    <div class="form-group fix-width">
+                        <h5>Leave Type <span class="text-danger">*</span></h5>
+                        <div class="controls">
+                            <select name="ReasonRequest" id="reasonRequest" required class="form-control">
+                                <option value="Normal leave">Normal leave</option>
+                                <option value="Maternity leave">Maternity leave</option>
+                                <option value="Married">Married</option>
+                                <option value="Husband or Wife Parents or In laws Children or Son In law have passed away">
+                                    Husband or Wife Parents or In laws Children or Son In law have passed away
+                                </option>
+                                <option value="Wife gave birth or had a miscarriage">
+                                    Wife gave birth or
+                                    had a miscarriage
+                                </option>
+                                <option value="Marry or Circumcise or Baptize Children">
+                                    Marry or Circumcise or Baptize Children
+                                </option>
+                                <option value="Family member in one house died">
+                                    Family member in one
+                                    house died
+                                </option>
+                            </select>
+                            <div class="alert alert-warning mt-3 mb-2 alert-dismissible fade show">
+                                Leave Must <strong id="target" class="text-danger"></strong> Days! <div class="float-right">
+                                    Only for
+                                    normal leave can be less than recommended...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h5>Start Date <span class="text-danger">*</span></h5>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="StartDate" id="startDate">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h5>End Date <span class="text-danger">*</span></h5>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="EndDate" id="endDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h5>Notes <span class="text-danger">*</span></h5>
+                        <div class="controls">
+                            <textarea name="Notes" id="notes" class="form-control" required
+                                      placeholder="Enter your notes"></textarea>
+                        </div>
+                    </div>
+
+                    <!--Upload File and add onclick-->
+                    @*<div class="col-md-6">
+                        <div class="form-group">
+                            <label for="avatar">Choose File:</label>
+                            <input type="file" id="uploadFile" name="uploadFile" accept="image/png, image/jpeg">
+                        </div>
+                    </div>*@
+
+                    <div class="text-xs-right">
+                        <input type="hidden" name="requestStatus" id="requestStatus" value="0" />
+                        <button type="submit" class="btn btn-info" id="sendRequest">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/js/validation.js"></script>
+    <script>
+        !function (window, document, $) {
+            "use strict";
+            $("input,select,textarea").not("[type=submit]").jqBootstrapValidation()
+        }(window, document, jQuery);
+    </script>
+
+    <script>
+        $("select")
+            .change(function () {
+                var interval;
+                $("option:selected").each(function () {
+                    if (this.value == "Normal leave") {
+                        interval = 4;
+                    } else if (this.value == "Married") {
+                        interval = 2;
+                    } else if (this.value == "Maternity leave") {
+                        interval = 89;
+                    } else if (this.value == "Husband or Wife Parents or In laws Children or Son In law have passed away" || this.value == "Wife gave birth or had a miscarriage" || this.value == "Marry or Circumcise or Baptize Children") {
+                        interval = 1;
+                    } else if (this.value == "Family member in one house died") {
+                        interval = 0;
+                    }
+                });
+                $("#target").text(interval + 1);
+
+                $("#startDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    minDate: 0,
+                    maxDate: 100,
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+                $("#endDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    minDate: 0,
+                    maxDate: 190,
+                    changeMonth: true,
+                    changeYear: true
+                })
+
+                var today = new Date();
+                var target = new Date(today.getFullYear(), today.getMonth(), today.getDate() + interval);
+                $("#startDate").datepicker("setDate", today);
+                $("#endDate").datepicker("setDate", target);
+
+                $("#startDate").on("change", function () {
+                    var start = $("#startDate").datepicker("getDate");
+                    start.setDate(start.getDate() + interval);
+                    $("#endDate").datepicker("setDate", start);
+                    $("#endDate").datepicker("option", "minDate", $("#startDate").datepicker("getDate"));
+                });
+
+                $("#endDate").on("change", function () {
+                    var start = $("#startDate").datepicker("getDate");
+                    $("#startDate").datepicker("setDate", start);
+                    $("#startDate").datepicker("option", "maxDate", $("#endDate").datepicker("getDate"));
+                });
+            })
+            .change();
+
+        $("#formSendRequest").validate({
+            rules: {
+                notes: "required",
+            },
+            submitHandler: function (formSendRequest) {
+                debugger;
+                var form = $(formSendRequest);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Request/SendRequest",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.message == "Maternity leave only for Female") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Maternity leave only for Female",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "Error") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Sorry the number of days cannot be less than 1 day",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "You cannot take leave for more than 5 days or your leave quota is not enough") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "You cannot take leave for more than 5 days or your leave quota is not enough",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "Input total days to apply for leave must be 90 days") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Input total days to apply for leave must be 90 days",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "Input total days to apply for leave must be 3 days") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Input total days to apply for leave must be 3 days",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "Input total days to apply for leave must be 2 days") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Input total days to apply for leave must be 2 days",
+                                "error"
+                            )
+                        }
+                        else if (data.message == "Input total days to apply for leave must be 1 days") {
+                            Swal.fire(
+                                "Something's wrong!",
+                                "Input total days to apply for leave must be 1 days",
+                                "error"
+                            )
+                        }
+                        else {
+                            Swal.fire(
+                                'Please wait for approval!',
+                                'Your leave request has been sent',
+                                'success'
+                            )
+                        }
+                    },
+                });
+            }
+        });
+
+        //function uploadFile() {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "Request/UploadFile",
+        //        data: uploadFile,
+        //        success: function (data) {
+        //            console.log(data);
+        //            Swal.fire(
+        //                'It worked!',
+        //                'successfully Upload File',
+        //                'success'
+        //            )
+        //        }
+        //    })
+        //}
+
+    </script>
+
+}

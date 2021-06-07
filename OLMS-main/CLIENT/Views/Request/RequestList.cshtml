@@ -1,0 +1,324 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Request List";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <div class="table-responsive m-t-40">
+                    <table id="table_id" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Reason Request</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Reason Request</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal *@
+<div class="modal fade" role="dialog" id="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="form" name="form">
+                    <div class="form-body">
+                        <h3 class="box-title">Requester Info</h3>
+                        <hr class="m-t-0 m-b-40">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">NIK</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="NIK" name="nik"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Name</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="FullName" name="FullName"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Email</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="Email" name="Email"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Leave Quota</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="RemainingQuota" name="RemainingQuota"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <h3 class="box-title">Details Request</h3>
+                        <hr class="m-t-0 m-b-40">
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6" hidden>
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-2"> Request ID</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control-static" id="id" name="id">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Request ID</label>
+                                    <div class="col-md-7">
+                                        <p type="text" class="form-control-static" id="ID" name="ID"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Request Type</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="Reason" name="Reason"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Start Date</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="StartDate" name="StartDate">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">End Date</label>
+                                    <div class="col-md-7">
+                                        <p class="form-control-static" id="EndDate" name="EndDate"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-2">Submited Date</label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static text-justify" id="DateRequest" name="DateRequest"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-2">Notes</label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static text-justify" id="Notes" name="Notes"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@* Modal *@
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var dataTable = $('#table_id').DataTable({
+                "filter": true,
+                "orderMulti": false,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                "ajax": {
+                    "url": "/Request/Get",
+                    "type": "GET",
+                    "dataSrc": "data"
+                },
+                language: {
+                    searchPlaceholder: "Search..."
+                },
+                "columnDefs": [
+                    {
+                        "targets": [0, 6],
+                        "width": "5%",
+                    },
+                    {
+                        "targets": [7, 1],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [1, 2, 3, 4, 5, 6, 7, 8],
+                        "orderable": false,
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    { "data": 'id' },
+                    {
+                        "data": 'employee',
+                        render: function (data, type, row) {
+                            console.log(data);
+                            var obj = JSON.parse(JSON.stringify(data));
+                            return obj.fullName;
+                        }
+                    },
+                    { "data": 'reasonRequest' },
+                    {
+                        "data": 'startDate',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD MMMM YYYY');
+                        }
+                    },
+                    {
+                        "data": 'endDate',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD MMMM YYYY');
+                        }
+                    },
+                    {
+                        "data": 'requestStatus',
+                        "render": function (data, type, row) {
+                            if (data == 0) {
+                                return "<div class='text-center'><button value='0' class='btn-sm btn-info'>Waiting</button></div>"
+                            }
+                            else if (data == 1) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-success'>Approved - HRD</button></div>"
+                            }
+                            else if (data == 2) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-danger'>Rejected - HRD</button></div>"
+                            }
+                            else if (data == 3) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-info''>Waiting</button></div>"
+                            }
+                            else if (data == 4) {
+                                return "<div class='text-center'><button value='4' class='btn-sm btn-danger'>Rejected - Manager</button></div>"
+                            }
+                        }
+                    },
+                    { "data": 'notes' },
+                    {
+                        "data": 'id',
+                        "render": function (data, type, row, meta) {
+                            return '<a data-toggle="modal" data-target="#modal" class="btn btn-outline-info text-warning" data-toggle="tooltip" data-placement="top" title="Details ' + '"  onclick="Get(\'' + row['id'] + '\')"><i class="fas fa-info"></i>  Details</a> ' +
+                                '<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete ' +  '" onclick="Delete(\'' + row['id'] + '\')"><i class ="far fa-trash-alt"></i></button>'
+                        }
+                    }
+                ]
+            });
+        });
+        function Get(id) {
+            $.ajax({
+                url: "/Request/GetById",
+                type: "GET",
+                data: { 'id': id },
+                success: function (data) {
+                    var sessionValue = $("NIK");
+                    $('#modal').modal('show');
+                    var data = data['data'];
+                    $('#id').val(data.id);
+                    $('#ID').text(data.id);
+                    $('#NIK').text(data.niK_Employee);
+                    $('#FullName').text(data.employee.fullName);
+                    $('#Email').text(data.employee.email);
+                    $('#RemainingQuota').text(data.employee.remainingQuota);
+                    $('#StartDate').text(moment(data.startDate).format('DD MMMM YYYY'));
+                    $('#EndDate').text(moment(data.endDate).format('DD MMMM YYYY'));
+                    $('#Notes').text(data.notes);
+                    $('#Reason').text(data.reasonRequest);
+                    $('#DateRequest').text(moment(data.dateRequest).format('DD MMMM YYYY'));
+                    console.log(data);
+                }
+            });
+        }
+
+        //Delete
+        function Delete(id) {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((data) => {
+                if (data.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Request/Delete",
+                        data: { 'id': id },
+                        success: function (data) {
+                            $('#table_id').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your data has been deleted.',
+                                'success'
+                            )
+                        },
+                    });
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "RequestTable";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <div class="table-responsive m-t-40">
+                    <table id="table_id" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id</th>
+                                <th>NIK</th>
+                                <th>Reason Request</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Request Status</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>Id</th>
+                                <th>NIK</th>
+                                <th>Reason Request</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Request Status</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            var dataTable = $('#table_id').DataTable({
+                "filter": true,
+                "orderMulti": false,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                "ajax": {
+                    "url": "/request/get",
+                    "type": "GET",
+                    "dataSrc": "data"
+                },
+                language: {
+                    searchPlaceholder: "Search..."
+                },
+                "columnDefs": [
+                    {
+                        "targets": [1],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [1,2,3,4,5,7,8],
+                        "orderable": false,
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    { "data": 'id' },
+                    {
+                        "data": 'niK_Employee',
+                    },
+                    { "data": 'reasonRequest' },
+                    {
+                        "data": 'startDate',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD MMMM YYYY');
+                        }
+                    },
+                    {
+                        "data": 'endDate',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD MMMM YYYY');
+                        }
+                    },
+                    {
+                        "data": 'requestStatus',
+                        "render": function (data, type, row) {
+                            if (data == 0) {
+                                return "<div class='text-center'><button value='0' class='btn-sm btn-info'>Waiting</button></div>"
+                            }
+                            else if (data == 1) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-success'>Approved - HRD</button></div>"
+                            }
+                                else if (data == 2) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-danger'>Rejected - HRD</button></div>"
+                            }
+                                else if (data == 3) {
+                                return "<div class='text-center'><button value='1' class='btn-sm btn-success'>Approved - Manager</button></div>"
+                            }
+                            else if (data == 4) {
+                                return "<div class='text-center'><button value='4' class='btn-sm btn-danger'>Rejected - Manager</button></div>"
+                            }
+                        }
+                    },
+                    { "data": 'notes' },
+                    {
+                        "data": 'niK_Employee',
+                        "render": function (data, type, row, meta) {
+                            return '<a class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Details ' + row['fullName'] + '"  onclick="Get(\'' + row['nik'] + '\')"><i class ="far fa-info-circle"></i> Details</a> '
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

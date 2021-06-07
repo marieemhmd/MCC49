@@ -1,0 +1,178 @@
+﻿@{ Layout = "_LayoutAdmin";
+    ViewBag.Title = "Profile";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">NIK</label>
+                                    <div class="col-md-9">
+                                        <p type="text" class="form-control-static" name="NIK" id="NIK"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Name</label>
+                                    <div class="col-md-8">
+                                        <p type="text" name="FullName" id="FullName" class="form-control-static"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Email</label>
+                                    <div class="col-md-9">
+                                        <p type="text" name="Email" id="Email" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Phone</label>
+                                    <div class="col-md-8">
+                                        <p type="text" name="PhoneNumber" id="PhoneNumber" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Birth Date</label>
+                                    <div class="col-md-9">
+                                        <p type="date" name="BirthDate" id="BirthDate" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Gender</label>
+                                    <div class="col-md-8">
+                                        <p type="text" name="Gender" id="Gender" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @* row 2 *@
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Status</label>
+                                    <div class="col-md-9">
+                                        <p type="text" name="MaritalStatus" id="MaritalStatus" class="form-control-static"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Address</label>
+                                    <div class="col-md-8">
+                                        <p type="text" name="Address" id="Address" class="form-control-static"> Loading... </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Manager</label>
+                                    <div class="col-md-9">
+                                        <p type="text" name="Manager" id="Manager" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Department</label>
+                                    <div class="col-md-8">
+                                        <p type="text" name="Department" id="Department" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Position</label>
+                                    <div class="col-md-9">
+                                        <p type="text" name="Position" id="Position" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-4">Leave Quota</label>
+                                    <div class="col-md-8">
+                                        <p type="number" name="LeaveQuota" id="LeaveQuota" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Join Date</label>
+                                    <div class="col-md-8">
+                                        <p type="date" name="joinDate" id="joinDate" class="form-control-static">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        window.onload = function () {
+            $.ajax({
+                url: "/Employee/EmpProfile",
+                type: "GET",
+                datatype: 'json',
+                success: function (data) {
+                    var data = data['data'];
+                    console.table(data);
+                    $('#NIK').text(data.nik);
+                    $('#FullName').text(data.fullName);
+                    $('#PhoneNumber').text(data.phoneNumber);
+                    $('#Email').text(data.email);
+                    $('#BirthDate').text(moment(data.birthDate).format('YYYY-MM-DD'));
+                    $('#Gender').text(data.gender);
+                    $('#MaritalStatus').text(data.maritalStatus);
+                    $('#Address').text(data.address);
+                    $('#LeaveQuota').text(data.remainingQuota);
+                    $('#Manager').text(data.niK_Manager);
+                    $('#Position').text(data.position.positionName);
+                    $('#Department').text(data.position.department.deptName);
+                    $('#joinDate').text(moment(data.joinDate).format('YYYY-MM-DD'));
+                }
+            });
+        };
+    </script>
+}

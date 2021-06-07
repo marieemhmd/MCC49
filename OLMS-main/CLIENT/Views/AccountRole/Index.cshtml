@@ -1,0 +1,241 @@
+﻿@{ Layout = "_LayoutAdmin";
+    ViewBag.Title = "Set Role";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <div class="table-responsive m-t-40">
+                    <button type="button" class="mb-3 btn btn-primary text-center" data-toggle="modal" data-target="#modal" onclick="resetButton()">
+                        <i class="fas fa-user-plus"></i> Add New Account Role
+                    </button>
+                    <table id="AccountRoleTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIK</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>NIK</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            @* Modal Employee *@
+            <div class="modal fade" role="dialog" id="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">AccountRole</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="Readonly()"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form" name="form">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="NIK" class="col-form-label">NIK<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="NIK" id="NIK" required data-validation-required-message="This field is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="RoleID" class="col-form-label">Role<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                @*<input type="text" class="form-control" name="RoleID" id="RoleID" required data-validation-required-message="This field is required">*@
+                                                <select class="form-control" name="RoleID" id="RoleID"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="Readonly()">Close</button>
+                            <button class="btn btn-primary" type="submit" form="form">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal Add Employee *@
+
+@section scripts
+{
+    <script>
+var isUpdate;
+        $(document).ready(function () {
+            dataTable = $('#AccountRoleTable').DataTable({
+                "order": [[0, "asc"]],
+                "filter": true,
+                "orderMulti": false,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                "ajax": {
+                    "url": "/AccountRole/get",
+                    "type": "GET",
+                    "dataSrc": "data"
+                },
+                language: {
+                    searchPlaceholder: "Search..."
+                },
+                "columnDefs": [
+                    {
+                        "targets": [0, 1, 2],
+                        "width": "5%",
+                    },
+                    {
+                        "targets": [3],
+                        "width": "10%",
+                    },
+                    {
+                        "targets": [1, 2, 3],
+                        "orderable": false,
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    { "data": 'nik' },
+                    {
+                        "data": 'role',
+                        render: function (data, type, row) {
+                            var obj = JSON.parse(JSON.stringify(data));
+                            return obj.roleName;
+                        }
+                    },
+                    {
+                        "data": 'nik',
+                        "render": function (data, type, row, meta) {
+                            return '<a class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit ' + row['nik'] + '"  onclick="Get(\'' + row['nik'] + '\')"><i class ="far fa-edit"></i> </a> ' +
+                                '<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete ' + row['nik'] + '" onclick="Delete(\'' + row['nik'] + '\')"><i class ="far fa-trash-alt"></i></button>'
+                        }
+                    }
+                ]
+            });
+
+            //roleId
+            var RoleDynamicDropdown = '<option value="-1">Select Role</option>';
+            $.ajax({
+                type: "GET",
+                url: '/AccountRole/Get',
+                success: function (data) {
+                    var result = data['data']
+                    for (var i = 0; i < result.length; i++) {
+                        RoleDynamicDropdown += '<option value="' + result[i].role.roleID + '">' + result[i].role.roleName + '</option>';
+                        $("#RoleID").html(RoleDynamicDropdown);
+                    }
+                }
+            });
+
+        });
+        function Readonly() {
+            $('#NIK').attr('readonly', false);
+        }
+        $("#form").validate({
+            submitHandler: function (form) {
+                var form = $(form);
+                var urlString;
+                if (isUpdate == 1)
+                    urlString = "AccountRole/put"
+                else
+                    urlString = "AccountRole/post"
+                $.ajax({
+                    type: "POST",
+                    url: urlString,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $('#modal').modal('hide');
+                        $('#AccountRoleTable').DataTable().ajax.reload();
+                        Swal.fire({
+                            AccountRole: 'center',
+                            icon: 'success',
+                            title: 'Your data has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href>Your Work cannot be saved</a>'
+                        })
+                    }
+                });
+            }
+        });
+        function resetButton() {
+            $('#NIK').attr('readonly', false);
+            isUpdate = 0;
+            $('#form').trigger('reset');
+        }
+        function Get(id) {
+            $('#NIK').attr('readonly', true);
+            $.ajax({
+                url: "AccountRole/GetById",
+                type: "GET",
+                data: { 'id': id },
+                success: function (data) {
+                    $('#modal').modal('show');
+                    var data = data['data'];
+                    $('#NIK').val(data.nik);
+                    $('#RoleID').val(data.roleID);
+                    isUpdate = 1;
+                }
+            });
+        }
+        function Delete(id) {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((data) => {
+                if (data.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "AccountRole/Delete",
+                        data: { 'id': id },
+                        success: function (data) {
+                            $('#AccountRoleTable').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your data has been deleted.',
+                                'success'
+                            )
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}

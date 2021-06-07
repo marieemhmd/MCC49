@@ -1,0 +1,236 @@
+﻿@{ Layout = "_LayoutAdmin";
+    ViewBag.Title = "Role";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <div class="table-responsive m-t-40">
+                    <button type="button" class="mb-3 btn btn-primary text-center" data-toggle="modal" data-target="#modal" onclick="resetButton()">
+                        <i class="fas fa-user-plus"></i> Add New Role
+                    </button>
+                    <table id="RoleTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>ID</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            @* Modal Employee *@
+            <div class="modal fade" role="dialog" id="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Role</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="Readonly()"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form" name="form">
+                                <div class="form-row">
+                                    <div class="col-md-6" hidden>
+                                        <div class="form-group">
+                                            <label for="roleID" class="col-form-label">ID<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="number" form-control" name="roleID" id="roleID" required data-validation-required-message="This field is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="RoleName" class="col-form-label">Role Name<span class="text-danger"> *</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="RoleName" id="roleName" required data-validation-required-message="This field is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="Readonly()">Close</button>
+                            <button class="btn btn-primary" type="submit" form="form">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal Add Employee *@
+
+@section scripts
+{
+    <script>
+        var isUpdate;
+        $(document).ready(function () {
+            dataTable = $('#RoleTable').DataTable({
+                "order": [[0, "asc"]],
+                "filter": true,
+                "orderMulti": false,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                "ajax": {
+                    "url": "/Role/get",
+                    "type": "GET",
+                    "dataSrc": "data"
+                },
+                language: {
+                    searchPlaceholder: "Search..."
+                },
+                "columnDefs": [
+                    {
+                        "targets": [1],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [0, 1, 3],
+                        "width": "5%",
+                    },
+                    {
+                        "targets": [3],
+                        "width": "10%",
+                    },
+                    {
+                        "targets": [2, 3],
+                        "orderable": false,
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    { "data": 'roleID' },
+                    {
+                        "data": 'roleName'
+                    },
+                    {
+                        "data": 'roleID',
+                        "render": function (data, type, row, meta) {
+                            return '<a class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit ' + row['roleName'] + '"  onclick="Get(\'' + row['roleID'] + '\')"><i class ="far fa-edit"></i> </a> ' +
+                                '<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete ' + row['roleName'] + '" onclick="Delete(\'' + row['roleID'] + '\')"><i class ="far fa-trash-alt"></i></button>'
+                        }
+                    }
+                ]
+            });
+        });
+        function Readonly() {
+            $('#roleID').attr('readonly', false);
+        }
+        $("#form").validate({
+            rules: {
+                roleName: "required",
+            },
+            submitHandler: function (form) {
+                var form = $(form);
+                var urlString;
+                if (isUpdate == 1)
+                    urlString = "/Role/put"
+                else
+                    urlString = "/Role/post"
+                $.ajax({
+                    type: "POST",
+                    url: urlString,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $('#modal').modal('hide');
+                        $('#RoleTable').DataTable().ajax.reload();
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your data has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href>Your Work cannot be saved</a>'
+                        })
+                    }
+                });
+            }
+        });
+        function resetButton() {
+            isUpdate = 0;
+            $('#roleID').attr('readonly', false);
+            $('#form').trigger('reset');
+        }
+        function Get(id) {
+            $('#roleID').attr('readonly', true);
+            $.ajax({
+                url: "/Role/GetById",
+                type: "GET",
+                data: { 'id': id },
+                success: function (data) {
+                    $('#modal').modal('show');
+                    var data = data['data'];
+                    $('#roleID').val(data.roleID);
+                    $('#roleName').val(data.roleName);
+                    isUpdate = 1;
+                }
+            });
+        }
+        function Delete(id) {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((data) => {
+                if (data.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Role/Delete",
+                        data: { 'id': id },
+                        success: function (data) {
+                            $('#RoleTable').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your data has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Your Work cannot be saved</a>'
+                            })
+                        },
+                    });
+                }
+            });
+        }
+
+    </script>
+}
